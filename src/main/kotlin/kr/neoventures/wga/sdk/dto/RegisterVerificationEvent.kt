@@ -1,5 +1,6 @@
 package kr.neoventures.wga.sdk.dto
 
+import kotlinx.serialization.Serializable
 import kr.neoventures.wga.sdk.domain.verificationevent.VerificationActionType
 import kr.neoventures.wga.sdk.domain.verificationevent.VerificationEventType
 import kr.neoventures.wga.sdk.domain.verificationevent.VerificationPlatformType

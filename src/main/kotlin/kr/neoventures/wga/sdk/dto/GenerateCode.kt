@@ -1,5 +1,7 @@
 package kr.neoventures.wga.sdk.dto
 
+import kotlinx.serialization.Serializable
+
 
 @Serializable
 data class GenerateCodeReq(

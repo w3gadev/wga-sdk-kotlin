@@ -8,22 +8,29 @@ import kr.neoventures.wga.sdk.dto.GenerateCodeReq
 import kr.neoventures.wga.sdk.dto.GenerateCodeRes
 import kr.neoventures.wga.sdk.dto.LinkUserReq
 import kr.neoventures.wga.sdk.dto.RegisterVerificationEventReq
+import kr.neoventures.wga.sdk.exception.WgaApiException
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
-class WgaApiException(val code: Int, message: String) : IOException("[$code] $message")
+interface WgaValidateApi {
+    suspend fun generateCode(request: GenerateCodeReq): GenerateCodeRes
+    suspend fun registerVerificationEvent(request: RegisterVerificationEventReq)
+    suspend fun linkUser(request: LinkUserReq)
+}
 
-class WgaValidateApiClient(
+class DefaultWgaValidateApi(
     private val baseUrl: String,
     private val apiKey: String,
     private val client: OkHttpClient = SHARED_CLIENT
-) {
+) : WgaValidateApi {
 
-    suspend fun generateCode(request: GenerateCodeReq): GenerateCodeRes {
+    override suspend fun generateCode(request: GenerateCodeReq): GenerateCodeRes {
         val httpRequest = createRequest(
             pathSegments = arrayOf("api", "users", "generate-code"),
             body = request
@@ -38,7 +45,7 @@ class WgaValidateApiClient(
         }
     }
 
-    suspend fun registerVerificationEvent(request: RegisterVerificationEventReq) {
+    override suspend fun registerVerificationEvent(request: RegisterVerificationEventReq) {
         val httpRequest = createRequest(
             pathSegments = arrayOf("api", "verification-events"),
             body = request
@@ -47,7 +54,7 @@ class WgaValidateApiClient(
         executeRequest(httpRequest) { }
     }
 
-    suspend fun linkUser(request: LinkUserReq) {
+    override suspend fun linkUser(request: LinkUserReq) {
         val httpRequest = createRequest(
             pathSegments = arrayOf("api", "verification-events", "link"),
             body = request

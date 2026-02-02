@@ -1,5 +1,6 @@
 package kr.neoventures.wga.sdk.dto
 
+import kotlinx.serialization.Serializable
 import kr.neoventures.wga.sdk.domain.verificationeventproperty.*
 
 @Serializable
