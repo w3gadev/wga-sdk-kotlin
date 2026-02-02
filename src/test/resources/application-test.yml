@@ -1,0 +1,4 @@
+wga:
+  api:
+    base-url: ${WGA_BASE_URL:https://api.example.com}
+    key: ${WGA_API_KEY:default_secret_key}
